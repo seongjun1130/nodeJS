@@ -7,6 +7,7 @@ const userController = require('../controllers/userController');
 const {validateSignUp} = require('../middleware/ValidateUser');
 
 router.post('/signup',validateSignUp,userController.signUp);
+router.post('/login',validateSignUp,userController.login);
 router.get('/',userController.getAllUsers);
 router.get('/:id',userController.getUserById);
 router.put('/:id',userController.updateUser);

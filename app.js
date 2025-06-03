@@ -1,4 +1,7 @@
+require('dotenv').config();
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const authMiddleware = require('./middleware/AuthMiddleware');
 const userRouter = require('./routers/user');
 
 const db = require("./models");
@@ -8,6 +11,9 @@ const port = 8080;
 
 // JSON 형태 요청 바디 파싱
 app.use(express.json());
+app.use(cookieParser());
+
+app.use(authMiddleware);
 // users URL 요청 라우팅
 app.use('/users', userRouter);
 

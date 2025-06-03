@@ -1,5 +1,6 @@
 const userRepository = require('../repositories/userRepository');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const { User } = require('../models');
 
@@ -17,6 +18,24 @@ exports.signUp = async (data) => {
         nickname: user.nickname
     };
 };
+
+exports.logIn = async (data) => {
+    const user = await userRepository.findByEmail(data.email);
+    if (!user) throw new Error('User not found');
+    const isPasswordValid = await user.authenticate(data.password);
+    if (!isPasswordValid) throw new Error('Invalid password');
+
+    const token = jwt.sign(
+        {
+            id: user.id, email: user.email
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRES_IN || '1h'
+        }
+    );
+    return { token, user };
+}
 
 exports.getAllUsers = () => {
     return userRepository.findAll();
