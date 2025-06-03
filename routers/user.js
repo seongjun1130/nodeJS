@@ -4,7 +4,9 @@ const router = express.Router();
 // 사용자 요청 컨트롤러
 const userController = require('../controllers/userController');
 
-router.post('/',userController.createUser);
+const {validateSignUp} = require('../middleware/ValidateUser');
+
+router.post('/signup',validateSignUp,userController.signUp);
 router.get('/',userController.getAllUsers);
 router.get('/:id',userController.getUserById);
 router.put('/:id',userController.updateUser);
