@@ -1,7 +1,7 @@
-const User = require('../model/User');
+const { User } = require('../models');
 
 exports.create = (data) => User.create(data);
 
-exports.findAll = () => User.findAll();
+exports.findAll = async () => { return await User.findAll() };;
 
 exports.findByPk = (id) => User.findByPk(id);
